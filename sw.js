@@ -1,9 +1,11 @@
 // DigitalCar Service Worker - Offline Cache
-const CACHE_NAME = 'digitalcar-v1.0';
+const CACHE_NAME = 'digitalcar-v1.1';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
-  './manifest.json'
+  './manifest.json',
+  './onix_card.jpg',
+  './onix_logo.jpg'
 ];
 
 self.addEventListener('install', (event) => {

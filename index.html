@@ -74,10 +74,10 @@
 
   <!-- 1. COMPACT HEADER -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-30 no-print">
-    <div class="max-w-[480px] md:max-w-[720px] mx-auto px-4 py-3 flex items-center justify-between">
+    <div class="max-w-[480px] md:max-w-[720px] mx-auto px-4 py-2.5 flex items-center justify-between">
       <div class="flex items-center space-x-2.5">
-        <div class="w-9 h-9 rounded-xl bg-brand flex items-center justify-center text-white shadow-sm font-black text-sm">
-          DC
+        <div class="w-9 h-9 rounded-xl overflow-hidden border border-slate-200 shadow-sm flex-shrink-0 bg-slate-100">
+          <img src="onix_logo.jpg" alt="Onix" class="w-full h-full object-cover">
         </div>
         <div class="flex items-center space-x-2">
           <span class="text-base font-bold tracking-tight text-slate-900">DigitalCar</span>
@@ -114,6 +114,17 @@
 
     <!-- 1-BOSQICH: "MASHINA" KARTASI -->
     <section class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm space-y-4 no-print">
+      <!-- Ixcham Onix fotosi (Ekranni to'sib qo'ymaydi, balandligi atigi 110-130px) -->
+      <div class="relative w-full h-28 sm:h-36 rounded-xl overflow-hidden border border-slate-200 shadow-sm bg-slate-100">
+        <img src="onix_card.jpg" alt="Chevrolet Onix" class="w-full h-full object-cover object-center">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-transparent to-transparent flex items-end p-2.5">
+          <div class="flex items-center justify-between w-full text-white text-xs">
+            <span class="font-bold tracking-wide drop-shadow-sm">Chevrolet Onix Sedan</span>
+            <span class="text-[10px] bg-white/20 backdrop-blur-sm px-2 py-0.5 rounded-md font-medium">1.2 / 1.2 Turbo</span>
+          </div>
+        </div>
+      </div>
+
       <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
         <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider">1. Mashina ma'lumotlari</h2>
         <button id="resetDefaultsBtn" class="text-xs text-slate-500 hover:text-brand font-medium">Qayta sozlash</button>
