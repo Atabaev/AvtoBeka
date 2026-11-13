@@ -566,7 +566,7 @@
 
     function loadState() {
       try {
-        const saved = localStorage.getItem('digitalcar_v2_state');
+        const saved = localStorage.getItem('avtobeka_state') || localStorage.getItem('digitalcar_v2_state');
         if (saved) {
           state = { ...defaultState, ...JSON.parse(saved) };
         }
@@ -577,7 +577,7 @@
 
     function saveState() {
       try {
-        localStorage.setItem('digitalcar_v2_state', JSON.stringify(state));
+        localStorage.setItem('avtobeka_state', JSON.stringify(state));
       } catch (e) {
         console.warn(e);
       }
