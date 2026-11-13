@@ -1,5 +1,7 @@
 # Maxfiy va og'ir qo'llanma PDF fayllari repo'ga kirmaydi
 *.pdf
+pdf/
+pdf/*
 onix*.pdf
 
 # Tizim va muhit fayllari

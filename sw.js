@@ -1,11 +1,16 @@
 // DigitalCar Service Worker - Offline Cache
-const CACHE_NAME = 'digitalcar-v1.1';
+const CACHE_NAME = 'digitalcar-v2.0';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './manifest.json',
-  './onix_card.jpg',
-  './onix_logo.jpg'
+  './data/cars.js',
+  './images/onix.png',
+  './images/cobalt.png',
+  './images/damas.png',
+  './images/tracker.png',
+  './images/spark.jpg',
+  './images/nexia.jpg'
 ];
 
 self.addEventListener('install', (event) => {
@@ -33,7 +38,6 @@ self.addEventListener('fetch', (event) => {
         return cachedResponse;
       }
       return fetch(event.request).catch(() => {
-        // Fallback agar internet bo'lmasa
         if (event.request.mode === 'navigate') {
           return caches.match('./index.html');
         }
