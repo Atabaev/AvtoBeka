@@ -1,10 +1,14 @@
-// DigitalCar Service Worker - Offline Cache
-const CACHE_NAME = 'digitalcar-v2.0';
+// AvtoBeka Service Worker - Offline Cache
+const CACHE_NAME = 'avtobeka-v2.1';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './manifest.json',
+  './favicon.ico',
+  './apple-touch-icon.png',
   './data/cars.js',
+  './images/logo-header.png',
+  './images/logo-ico.png',
   './images/onix.png',
   './images/cobalt.png',
   './images/damas.png',

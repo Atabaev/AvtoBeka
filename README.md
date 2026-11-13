@@ -1,8 +1,8 @@
-# DigitalCar
+# AvtoBeka
 
 > Ayol haydovchilar uchun mashina xizmati kalkulyatori: oddiy va tushunarli tilda.
 
-DigitalCar — Chevrolet avtomobillari (Onix, Cobalt, Damas, Spark, Nexia 3, Tracker) egalari, ayniqsa professional va aniq qo'llanma istagan ayol haydovchilar uchun keyingi texnik xizmat nima, qachon va qancha turishini ortiqcha texnik jargonsiz 30 soniyada bashorat qilib beruvchi mobil-birinchi veb-ilova.
+**AvtoBeka** — Chevrolet avtomobillari (Onix, Cobalt, Damas, Spark, Nexia 3, Tracker) egalari, ayniqsa professional va aniq qo'llanma istagan ayol haydovchilar uchun keyingi texnik xizmat nima, qachon va qancha turishini ortiqcha texnik jargonsiz 30 soniyada bashorat qilib beruvchi mobil-birinchi veb-ilova.
 
 ---
 
@@ -10,6 +10,13 @@ DigitalCar — Chevrolet avtomobillari (Onix, Cobalt, Damas, Spark, Nexia 3, Tra
 
 * **Onlayn veb-ilova (GitHub Pages):** [https://atabaev.github.io/DigitalCar/](https://atabaev.github.io/DigitalCar/)
 * **Offlayn rejimda:** `index.html` faylini istalgan brauzerda ikki marta bosib ochish kifoya (hech qanday server yoki o'rnatish talab qilinmaydi).
+
+---
+
+## Logotip va brending
+
+* **Header Logo:** `images/logo-header.png` — Toj kiygan avtomobil silueti va "AvtoBeka" brend nomi.
+* **Favicon / ICO:** `images/logo-ico.png` va `favicon.ico` — Yumaloq binafsha-pushti emblema ("The Driving Crown").
 
 ---
 
@@ -22,17 +29,11 @@ DigitalCar — Chevrolet avtomobillari (Onix, Cobalt, Damas, Spark, Nexia 3, Tra
 5. **Chevrolet Nexia 3** (1.5 MT, 1.5 AT) — zavod oraliqlari va qismlar holati.
 6. **Chevrolet Tracker** (1.2 Turbo AT) — zavod oraliqlari va qismlar holati.
 
-### Yangi model yoki trim qo'shish
-Barcha modellar `data/cars.js` faylida markazlashtirilgan. Yangi model qo'shish uchun:
-1. `images/` papkasiga avtomobil rasmini joylang (masalan, `model.png` yoki `model.jpg`).
-2. `data/cars.js` ichida `CAR_NOM` obyektini qo'shing: `id`, `name`, `image`, `years`, `years_verified: false`, `trims: [ { name, parts: [ ... ] } ]`.
-3. Har bir qism uchun oddiy tildagi tushuntirish (`why`) maydonini to'ldiring.
-
 ---
 
 ## Asosiy qulayliklar
 
-1. **Ayol haydovchilar uchun qulay ohang:** Murakkab mexanik atamalar o'rniga har bir detal uchun *"Nima uchun kerak?"* degan sodda izoh berilgan.
+1. **Ayol haydovchilar uchun sodda til:** Har bir detal uchun *"Nima uchun kerak?"* degan qisqa va tushunarli izoh berilgan.
 2. **"Shu probegga qadar odatda nima bo'lishi kerak edi":** Probeg va avtomobil yoshi bo'yicha qaysi xizmatlar taxminan necha marta o'tkazilishi kerak bo'lganligi ko'rsatiladi.
 3. **Servisda nima so'rash kerak (Checklist):** Ustaxonaga borganda ustadan nimalarni so'rash va hisob-fakturaga nimalarni yozdirish bo'yicha aniq nazorat ro'yxati.
 4. **Priborlar panelidagi 6 ta asosiy belgi:** Moy bosimi, harorat, akkumulyator, tormoz, check engine va shina bosimi haqida oddiy tushuncha va amaliy harakatlar.

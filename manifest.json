@@ -1,16 +1,21 @@
 {
-  "name": "DigitalCar - Chevrolet Onix Xizmat Kalkulyatori",
-  "short_name": "DigitalCar",
+  "name": "AvtoBeka - Ayol haydovchilar uchun xizmat kalkulyatori",
+  "short_name": "AvtoBeka",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#F8FAFC",
   "theme_color": "#1D4ED8",
-  "description": "Onix'ingizga keyingi xizmat nima, qachon va necha so'm turishini 30 soniyada bilib oling.",
+  "description": "Chevrolet avtomobillari uchun keyingi servis nima, qachon va necha so'm turishini ayol haydovchilar uchun oddiy tilda bilib oling.",
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='128' fill='%231D4ED8'/%3E%3Cpath d='M120 320 L160 200 L352 200 L392 320 Z' fill='%23FFFFFF' opacity='0.9'/%3E%3Ccircle cx='180' cy='330' r='36' fill='%230F172A'/%3E%3Ccircle cx='332' cy='330' r='36' fill='%230F172A'/%3E%3Cpath d='M180 220 L332 220' stroke='%231D4ED8' stroke-width='16' stroke-linecap='round'/%3E%3C/svg%3E",
-      "sizes": "192x192 512x512",
-      "type": "image/svg+xml"
+      "src": "images/logo-ico.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
     }
   ]
 }
