@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="uz" class="bg-slate-50 text-slate-900 antialiased">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DigitalCar — Chevrolet Onix Xizmat Bashoratchisi</title>
+  <meta name="description" content="Onix'ingizga keyingi servis nima, qachon va necha so'm turadi, 30 soniyada bilib oling.">
+  <meta name="theme-color" content="#1D4ED8">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="manifest.json">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              DEFAULT: '#1D4ED8',
+              hover: '#1E40AF',
+              light: '#EFF6FF',
+              dark: '#1E3A8A'
+            },
+            statusRed: '#DC2626',
+            statusAmber: '#D97706',
+            statusGreen: '#059669'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background-color: #F8FAFC;
+      color: #0F172A;
+      -webkit-tap-highlight-color: transparent;
+      font-size: 16px; /* iOS zoom oldini olish */
+    }
+
+    input[type=range] {
+      accent-color: #1D4ED8;
+    }
+
+    /* Chop etish (Print/PDF) stili */
+    @media print {
+      body {
+        background-color: #FFFFFF !important;
+        color: #000000 !important;
+        font-size: 11pt;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-only {
+        display: block !important;
+      }
+      .print-card {
+        border: 1px solid #CBD5E1 !important;
+        box-shadow: none !important;
+      }
+    }
+
+    @media screen {
+      .print-only {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+  <!-- 1. COMPACT HEADER -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 no-print">
+    <div class="max-w-[480px] md:max-w-[720px] mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-2.5">
+        <div class="w-9 h-9 rounded-xl bg-brand flex items-center justify-center text-white shadow-sm font-black text-sm">
+          DC
+        </div>
+        <div class="flex items-center space-x-2">
+          <span class="text-base font-bold tracking-tight text-slate-900">DigitalCar</span>
+          <span class="text-xs font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
+            Chevrolet Onix
+          </span>
+        </div>
+      </div>
+
+      <button id="pwaInstallBtn" class="hidden text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1.5 rounded-lg font-medium border border-slate-300">
+        O'rnatish
+      </button>
+    </div>
+  </header>
+
+  <!-- PRINT-ONLY HEADER -->
+  <div class="print-only max-w-[720px] mx-auto p-4 border-b-2 border-slate-800 mb-4">
+    <div class="flex justify-between items-start">
+      <div>
+        <h1 class="text-xl font-black text-slate-900">DIGITALCAR SERVIS HISOBOTI</h1>
+        <p class="text-xs text-slate-600">Chevrolet Onix individual texnik xizmat rejasi</p>
+        <p class="text-[10px] text-slate-500 mt-0.5" id="printDate"></p>
+      </div>
+      <div class="text-right text-[11px] text-slate-600">
+        <p class="font-bold text-slate-800">Versiya 1.0</p>
+        <p>Qoidaga asoslangan hisob</p>
+      </div>
+    </div>
+    <div id="printVehicleSummary" class="mt-3 p-2.5 bg-slate-100 rounded text-xs grid grid-cols-2 gap-2 border border-slate-200"></div>
+  </div>
+
+  <!-- ASOSIY OQIM (3 BOSQICH BITTA SAHIFADA) -->
+  <main class="max-w-[480px] md:max-w-[720px] mx-auto px-4 py-5 flex-1 w-full space-y-5">
+
+    <!-- 1-BOSQICH: "MASHINA" KARTASI -->
+    <section class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm space-y-4 no-print">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+        <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider">1. Mashina ma'lumotlari</h2>
+        <button id="resetDefaultsBtn" class="text-xs text-slate-500 hover:text-brand font-medium">Qayta sozlash</button>
+      </div>
+
+      <!-- Komplektatsiya (2 segmented buttons) -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-700 mb-1.5">Komplektatsiya</label>
+        <div class="grid grid-cols-2 gap-2">
+          <button type="button" data-val="1.2_turbo_at" class="trim-btn min-h-[44px] py-2 px-3 text-xs sm:text-sm font-bold rounded-xl border border-brand bg-brand text-white text-center transition-all">
+            1.2 Turbo AT
+          </button>
+          <button type="button" data-val="1.2_na_mt" class="trim-btn min-h-[44px] py-2 px-3 text-xs sm:text-sm font-bold rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 text-center transition-all">
+            1.2 MT
+          </button>
+        </div>
+      </div>
+
+      <!-- Ishlab chiqarilgan yil (Native select) -->
+      <div>
+        <label for="carYear" class="block text-xs font-semibold text-slate-700 mb-1.5">Ishlab chiqarilgan yili</label>
+        <select id="carYear" class="w-full min-h-[44px] bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand">
+          <option value="2026">2026</option>
+          <option value="2025">2025</option>
+          <option value="2024">2024</option>
+          <option value="2023" selected>2023</option>
+          <option value="2022">2022</option>
+        </select>
+      </div>
+
+      <!-- Yoqilg'i: 4 radio chips in a 2x2 grid (qisqa yorliqlar) -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-700 mb-1.5">Yoqilg'i</label>
+        <div class="grid grid-cols-2 gap-2">
+          <button type="button" data-fuel="ai95" class="fuel-chip min-h-[44px] p-2.5 rounded-xl border-2 border-brand bg-blue-50/70 text-slate-900 font-bold text-xs sm:text-sm text-center transition-all">
+            AI-95
+          </button>
+          <button type="button" data-fuel="ai92" class="fuel-chip min-h-[44px] p-2.5 rounded-xl border-2 border-slate-200 bg-white text-slate-700 font-bold text-xs sm:text-sm text-center transition-all">
+            AI-92
+          </button>
+          <button type="button" data-fuel="metan" class="fuel-chip min-h-[44px] p-2.5 rounded-xl border-2 border-slate-200 bg-white text-slate-700 font-bold text-xs sm:text-sm text-center transition-all">
+            Metan
+          </button>
+          <button type="button" data-fuel="propan" class="fuel-chip min-h-[44px] p-2.5 rounded-xl border-2 border-slate-200 bg-white text-slate-700 font-bold text-xs sm:text-sm text-center transition-all">
+            Propan
+          </button>
+        </div>
+      </div>
+
+      <!-- Sharoit: 2 radio chips + bitta qisqa yordamchi qator -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-700 mb-1.5">Haydash sharoiti</label>
+        <div class="grid grid-cols-2 gap-2">
+          <button type="button" data-cond="normal" class="cond-chip min-h-[44px] p-2.5 rounded-xl border-2 border-slate-200 bg-white text-slate-700 font-bold text-xs sm:text-sm text-center transition-all">
+            Normal
+          </button>
+          <button type="button" data-cond="severe" class="cond-chip min-h-[44px] p-2.5 rounded-xl border-2 border-brand bg-blue-50/70 text-slate-900 font-bold text-xs sm:text-sm text-center transition-all">
+            Og'ir
+          </button>
+        </div>
+        <p class="text-[11px] text-slate-500 mt-1">Og'ir: shahar, tirbandlik, taksi, chang</p>
+      </div>
+
+      <!-- Probeg: Katta raqamli input + Slayder -->
+      <div class="pt-2 border-t border-slate-100 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <label for="mileageInput" class="text-xs font-semibold text-slate-700">Joriy probeg</label>
+          <div class="flex items-center space-x-1.5 bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5">
+            <input type="text" id="mileageInput" value="45 000" class="w-28 text-right font-extrabold text-slate-900 bg-transparent focus:outline-none text-base">
+            <span class="text-xs font-bold text-slate-500">km</span>
+          </div>
+        </div>
+
+        <input type="range" id="mileageSlider" min="0" max="200000" step="500" value="45000" class="w-full h-2.5 bg-slate-200 rounded-lg cursor-pointer">
+        <div class="flex justify-between text-[11px] text-slate-400 font-mono">
+          <span>0</span>
+          <span>50 000</span>
+          <span>100 000</span>
+          <span>150 000</span>
+          <span>200 000 km</span>
+        </div>
+      </div>
+
+      <!-- Yig'ilgan blok: Oxirgi servis ma'lumoti (ixtiyoriy) -->
+      <div class="pt-1">
+        <button type="button" id="toggleLastServiceBtn" class="text-xs text-brand font-semibold hover:underline flex items-center space-x-1 min-h-[36px]">
+          <span id="lastServiceToggleIcon" class="w-4 h-4 rounded bg-blue-100 text-brand flex items-center justify-center font-bold text-xs">+</span>
+          <span>Oxirgi servis ma'lumoti (ixtiyoriy)</span>
+        </button>
+        <div id="lastServiceContainer" class="hidden mt-2 p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2.5 text-xs">
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label for="lastOilKm" class="block text-[11px] font-semibold text-slate-600 mb-1">Oxirgi moy probegi</label>
+              <input type="number" id="lastOilKm" placeholder="Masalan: 44500" min="0" max="200000" step="100" class="w-full min-h-[40px] bg-white border border-slate-300 rounded-lg px-2.5 text-xs font-bold text-slate-800 focus:outline-none">
+            </div>
+            <div>
+              <label for="lastOilMonths" class="block text-[11px] font-semibold text-slate-600 mb-1">Necha oy oldin?</label>
+              <input type="number" id="lastOilMonths" placeholder="Masalan: 1" min="0" max="48" step="1" class="w-full min-h-[40px] bg-white border border-slate-300 rounded-lg px-2.5 text-xs font-bold text-slate-800 focus:outline-none">
+            </div>
+          </div>
+          <p class="text-[10px] text-slate-400 leading-snug">
+            Kiritilsa, moy vaqt va masofasi aynan shu nuqtadan hisoblanadi.
+          </p>
+        </div>
+      </div>
+
+      <!-- 2 ta kichik matn-chip va asosiy tugma -->
+      <div class="pt-2 space-y-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-slate-500 font-medium">Namunalar:</span>
+          <div class="flex items-center space-x-2">
+            <button type="button" id="chipTaxi" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs border border-slate-200 transition-colors">
+              Taksi namunasi
+            </button>
+            <button type="button" id="chipOwner" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs border border-slate-200 transition-colors">
+              Oddiy egasi
+            </button>
+          </div>
+        </div>
+
+        <button id="calculateBtn" type="button" class="w-full min-h-[48px] bg-brand hover:bg-brand-hover text-white py-3 px-4 rounded-xl font-bold text-sm sm:text-base shadow-sm active:scale-[0.99] transition-all">
+          Holatni hisoblash
+        </button>
+      </div>
+    </section>
+
+    <!-- 2-BOSQICH: "NATIJA" KARTASI -->
+    <section id="resultsSection" class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm space-y-4 print-card">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 no-print">
+        <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider">2. Natijalar</h2>
+        <span class="text-[11px] text-slate-400 font-mono" id="resultsTimestamp"></span>
+      </div>
+
+      <!-- 3 ta ixcham KPI katakchalari -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+        <!-- KPI 1 -->
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-0.5">
+          <span class="text-[11px] font-semibold text-slate-500 uppercase">Umumiy holat</span>
+          <div class="flex items-baseline space-x-1.5">
+            <span id="kpiScore" class="text-2xl font-black text-slate-900">--%</span>
+            <span id="kpiLabel" class="text-[11px] font-bold px-1.5 py-0.2 rounded bg-slate-200 text-slate-700">--</span>
+          </div>
+        </div>
+
+        <!-- KPI 2 -->
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-0.5">
+          <span class="text-[11px] font-semibold text-slate-500 uppercase">Keyingi majburiy TO</span>
+          <div class="text-sm font-bold text-slate-900 truncate" id="kpiNextName">--</div>
+          <div class="text-xs font-semibold text-brand" id="kpiNextKm">-- km qoldi</div>
+        </div>
+
+        <!-- KPI 3 -->
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-0.5">
+          <span class="text-[11px] font-semibold text-slate-500 uppercase">Taxminiy smeta</span>
+          <div class="text-lg font-black text-slate-900" id="kpiTotalCost">0 UZS</div>
+          <div class="text-[10px] text-slate-500" id="kpiSmetaDesc">Qismlar va ish haqi</div>
+        </div>
+      </div>
+
+      <!-- K koeffitsiyentlar kichik qatori -->
+      <div class="flex items-center justify-between text-[11px] text-slate-600 px-1 py-0.5">
+        <div class="flex items-center space-x-1.5">
+          <span id="appliedKText" class="font-mono font-medium">K yoqilg'i 1.00 x K sharoit 1.00 = 1.00</span>
+          <span class="text-[9px] px-1 py-0.2 bg-slate-100 text-slate-500 rounded border border-slate-200">
+            taxminiy, validatsiya qilinmoqda
+          </span>
+        </div>
+      </div>
+      <p id="unenteredServiceNote" class="text-[10px] text-slate-400 italic px-1 hidden">
+        Oxirgi servis kiritilmagan, zavod jadvali bo'yicha taxmin qilindi.
+      </p>
+
+      <!-- TAQQOSLASH QATORI (COMPARISON) -->
+      <div id="comparisonContainer" class="p-3 rounded-xl border text-xs space-y-1.5 bg-amber-50/70 border-amber-200">
+        <div class="flex items-center justify-between cursor-pointer" id="comparisonToggleHeader">
+          <span class="font-bold text-slate-800" id="comparisonSummaryLine">AI-95 va normal sharoitda taqqoslash</span>
+          <span class="text-xs text-brand font-semibold" id="comparisonToggleIcon">+ Tafsilot</span>
+        </div>
+        <div id="comparisonDetailList" class="hidden pt-2 border-t border-amber-200/60 space-y-1 text-[11px] text-slate-700">
+          <!-- JS to'ldiradi -->
+        </div>
+      </div>
+
+      <!-- QISMLAR RO'YXATI (3 GURUH: QIZIL, SARIQ, YASHIL) -->
+      <div class="space-y-3 pt-1">
+        <!-- Zudlik bilan (Red) -->
+        <div id="groupRed" class="space-y-1.5">
+          <div class="flex items-center justify-between text-xs font-bold text-statusRed px-1">
+            <span>Zudlik bilan almashtirish (≤15%)</span>
+            <span id="badgeCountRed">0</span>
+          </div>
+          <div id="listRed" class="space-y-1.5"></div>
+        </div>
+
+        <!-- Tekshirish (Amber) -->
+        <div id="groupAmber" class="space-y-1.5">
+          <div class="flex items-center justify-between text-xs font-bold text-statusAmber px-1">
+            <span>Tekshirish va nazorat (16-35%)</span>
+            <span id="badgeCountAmber">0</span>
+          </div>
+          <div id="listAmber" class="space-y-1.5"></div>
+        </div>
+
+        <!-- Yaxshi (Green - birlamchi yig'ilgan) -->
+        <div id="groupGreen" class="space-y-1.5 border-t border-slate-100 pt-2">
+          <button type="button" id="toggleGreenBtn" class="w-full flex items-center justify-between text-xs font-bold text-statusGreen px-1 py-1 min-h-[36px]">
+            <span>Holati yaxshi (&gt;35%) (<span id="badgeCountGreen">0</span>)</span>
+            <span id="greenToggleIcon" class="text-slate-400 font-mono text-sm">+</span>
+          </button>
+          <div id="listGreen" class="space-y-1.5 hidden"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3-BOSQICH: "KITOBCHA VA KODLAR" KARTASI -->
+    <section class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm space-y-4 no-print">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+        <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider">3. Kitobcha va kodlar</h2>
+      </div>
+
+      <!-- PDF kitobcha tugmasi -->
+      <div class="flex items-center justify-between">
+        <div class="text-xs text-slate-600">
+          <span class="font-bold text-slate-800 block">PDF servis kitobchasi</span>
+          <span class="text-slate-400 text-[11px]">Chop etishga tayyor A4 format hisobot</span>
+        </div>
+        <button id="printReportBtn" type="button" class="min-h-[44px] bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors">
+          PDF kitobcha
+        </button>
+      </div>
+
+      <!-- Yig'ilgan: Priborlar paneli kodlari (DIC) -->
+      <div class="border-t border-slate-100 pt-3">
+        <button type="button" id="toggleDicBtn" class="w-full flex items-center justify-between text-xs font-bold text-slate-800 min-h-[36px]">
+          <span>Priborlar paneli kodlari (13 ta)</span>
+          <span id="dicToggleIcon" class="text-slate-400 font-mono text-sm">+</span>
+        </button>
+        <div id="dicSection" class="hidden mt-3 space-y-3">
+          <input type="text" id="dicSearchInput" placeholder="Kod raqami yoki so'z (masalan: 82, moy)..." class="w-full min-h-[44px] bg-slate-50 border border-slate-200 rounded-xl px-3 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-brand">
+          <div id="dicCodesList" class="space-y-2 text-xs"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEZ KUNDA (COLLAPSED BO'LIM) -->
+    <section class="border border-slate-200/80 rounded-xl p-3 text-slate-400 text-xs no-print">
+      <div class="flex items-center justify-between">
+        <span class="font-semibold text-slate-500">Tez kunda:</span>
+        <span class="text-[11px]">OBD-II Bluetooth, servislar xaritasi, onlayn navbat, Tracker 2, Cobalt (2-bosqich rejasida)</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="py-5 text-center text-xs text-slate-400 max-w-[480px] md:max-w-[720px] mx-auto px-4 no-print space-y-1">
+    <p class="font-medium text-slate-500">
+      Taxminiy hisob. Narxlar 2026-noyabr o'rtacha bozor narxi. Rasmiy servis xulosasi o'rnini bosmaydi.
+    </p>
+  </footer>
+
+  <!-- ASOSIY JAVASCRIPT -->
+  <script>
+    /* =====================================================================
+       TODO: Egasining qo'llanmasi PDF (onix qollanma) bilan sahifa
+       raqamlarini tekshirish kerak bo'lgan qismlar ro'yxati:
+       - Dvigatel moyi va filtr (10-3, 10-6, 11-7)
+       - Dvigatel havo filtri (10-3)
+       - Salon filtri (10-3)
+       - O't oldirish svechalari (10-3)
+       - Tormoz suyuqligi (10-3, 11-7)
+       - Old tormoz kolodkalari (10-4, 11-5)
+       - Uzatmalar qutisi moyi AT/MT (10-5, 11-7)
+       - Sovituvchi suyuqlik Dex-Cool (10-4, 11-7)
+       - GMR kamari (10-4)
+       - Shinalar rotatsiyasi (10-5, 11-8)
+       Hozircha SOURCES_VERIFIED = false bo'lib, sahifa raqami o'rniga
+       "Ishlab chiqaruvchi tavsiyasi" ko'rsatiladi.
+       ===================================================================== */
+    const SOURCES_VERIFIED = false;
+
+    // Koeffitsiyentlar (Gipotezalar)
+    const FUEL_FACTORS = {
+      ai95: 1.00,
+      ai92: 0.95,
+      metan: 0.70,
+      propan: 0.80
+    };
+
+    const SEVERITY_FACTORS = {
+      normal: 1.00,
+      severe: 0.75
+    };
+
+    // Narxlar bazasi (UZS - 2026-noyabr o'rtacha bozor)
+    const PRICES = {
+      oil_turbo: { part: 380000, labor: 50000 },
+      oil_na: { part: 360000, labor: 50000 },
+      oil_filter: { part: 55000, labor: 0 },
+      air_filter: { part: 75000, labor: 20000 },
+      cabin_filter: { part: 65000, labor: 20000 },
+      spark_plugs: { part: 320000, labor: 60000 },
+      brake_fluid: { part: 90000, labor: 80000 },
+      coolant: { part: 160000, labor: 70000 },
+      atf_oil: { part: 720000, labor: 150000 },
+      mt_oil: { part: 180000, labor: 60000 },
+      brake_pads: { part: 240000, labor: 70000 },
+      timing_belt: { part: 650000, labor: 350000 },
+      tire_service: { part: 0, labor: 50000 }
+    };
+
+    // Ehtiyot qismlar (Har biri o'z oraliq_km va oraliq_oy qiymatiga ega)
+    const PARTS = [
+      {
+        id: 'engine_oil',
+        name: "Dvigatel moyi va filtr",
+        group: "Dvigatel",
+        getSpec: (trim) => trim === '1.2_turbo_at' ? "dexos 1 Gen3 5W-30 (4.0 l)" : "dexos 1 Gen3 0W-20 (4.0 l)",
+        interval_km: 7500,
+        interval_months: 6,
+        fuel_factor_applies: true,
+        severity_factor_applies: true,
+        getPrice: (trim) => {
+          const oil = trim === '1.2_turbo_at' ? PRICES.oil_turbo : PRICES.oil_na;
+          return { part: oil.part + PRICES.oil_filter.part, labor: oil.labor + PRICES.oil_filter.labor };
+        },
+        source: "Qo'llanma 10-3-bet",
+        is_inspection_only: false
+      },
+      {
+        id: 'air_filter',
+        name: "Dvigatel havo filtri",
+        group: "Filtrlar",
+        getSpec: () => "Quruq elementli filtr",
+        interval_km: 15000,
+        interval_months: 12,
+        fuel_factor_applies: false,
+        severity_factor_applies: true,
+        getPrice: () => ({ part: PRICES.air_filter.part, labor: PRICES.air_filter.labor }),
+        source: "Qo'llanma 10-3-bet",
+        is_inspection_only: false
+      },
+      {
+        id: 'cabin_filter',
+        name: "Salon filtri",
+        group: "Filtrlar",
+        getSpec: () => "Uglerodli mikro-filtr",
+        interval_km: 15000,
+        interval_months: 12,
+        fuel_factor_applies: false,
+        severity_factor_applies: true,
+        getPrice: () => ({ part: PRICES.cabin_filter.part, labor: PRICES.cabin_filter.labor }),
+        source: "Qo'llanma 10-3-bet",
+        is_inspection_only: false
+      },
+      {
+        id: 'spark_plugs',
+        name: "O't oldirish svechalari",
+        group: "Yonish tizimi",
+        getSpec: () => "3 dona Iridium svecha",
+        interval_km: 30000,
+        interval_months: 24,
+        fuel_factor_applies: true,
+        severity_factor_applies: true,
+        getPrice: () => ({ part: PRICES.spark_plugs.part, labor: PRICES.spark_plugs.labor }),
+        source: "Qo'llanma 10-3-bet",
+        is_inspection_only: false
+      },
+      {
+        id: 'brake_fluid',
+        name: "Tormoz suyuqligi",
+        group: "Tormoz tizimi",
+        getSpec: (trim) => trim === '1.2_turbo_at' ? "DOT 4 LV (0.56 l)" : "DOT 4 LV (0.60 l)",
+        interval_km: 30000,
+        interval_months: 24,
+        fuel_factor_applies: false,
+        severity_factor_applies: true,
+        getPrice: () => ({ part: PRICES.brake_fluid.part, labor: PRICES.brake_fluid.labor }),
+        source: "Qo'llanma 10-3-bet",
+        is_inspection_only: false
+      },
+      {
+        id: 'brake_pads',
+        name: "Old tormoz kolodkalari",
+        group: "Tormoz tizimi",
+        getSpec: () => "Old disk kolodkalari",
+        interval_km: 30000,
+        interval_months: 24,
+        fuel_factor_applies: false,
+        severity_factor_applies: true,
+        getPrice: () => ({ part: PRICES.brake_pads.part, labor: PRICES.brake_pads.labor }),
+        source: "Qo'llanma 10-4-bet",
+        is_inspection_only: true // Tormoz kolodkalari faqat Tekshirish sifatida ko'rsatiladi
+      },
+      {
+        id: 'transmission_oil',
+        name: "Uzatmalar qutisi moyi",
+        group: "Transmissiya",
+        getSpec: (trim) => trim === '1.2_turbo_at' ? "Dexron VI ATF (8.1 l)" : "SAE 75W85 (1.6 l)",
+        getIntervalKm: (trim, condition) => {
+          if (trim === '1.2_turbo_at') {
+            return condition === 'severe' ? 70000 : 140000;
+          }
+          return condition === 'severe' ? 45000 : 60000;
+        },
+        interval_km: 140000,
+        interval_months: 60,
+        fuel_factor_applies: false,
+        severity_factor_applies: false, // alohida getIntervalKm orqali olinadi
+        getPrice: (trim) => trim === '1.2_turbo_at' 
+          ? { part: PRICES.atf_oil.part, labor: PRICES.atf_oil.labor }
+          : { part: PRICES.mt_oil.part, labor: PRICES.mt_oil.labor },
+        source: "Qo'llanma 10-5-bet",
+        is_inspection_only: false
+      },
+      {
+        id: 'coolant',
+        name: "Dvigatel sovituvchi suyuqligi",
+        group: "Sovutish tizimi",
+        getSpec: () => "Dex-Cool aralashmasi (5.4 l)",
+        interval_km: 120000,
+        interval_months: 60,
+        fuel_factor_applies: false,
+        severity_factor_applies: true,
+        getPrice: () => ({ part: PRICES.coolant.part, labor: PRICES.coolant.labor }),
+        source: "Qo'llanma 10-4-bet",
+        is_inspection_only: false
+      },
+      {
+        id: 'timing_belt',
+        name: "GMR kamari",
+        group: "Dvigatel",
+        getSpec: () => "Moy ichida ishlovchi tishli kamar",
+        interval_km: 240000,
+        interval_months: 180,
+        fuel_factor_applies: false,
+        severity_factor_applies: true,
+        getPrice: () => ({ part: PRICES.timing_belt.part, labor: PRICES.timing_belt.labor }),
+        source: "Qo'llanma 10-4-bet",
+        is_inspection_only: false
+      },
+      {
+        id: 'tire_service',
+        name: "Shinalar rotatsiyasi & balansirovka",
+        group: "Shassi",
+        getSpec: () => "185/65R15 yoki 195/55R16 (240 kPa)",
+        interval_km: 7500,
+        interval_months: 6,
+        fuel_factor_applies: false,
+        severity_factor_applies: true,
+        getPrice: () => ({ part: PRICES.tire_service.part, labor: PRICES.tire_service.labor }),
+        source: "Qo'llanma 10-5-bet",
+        is_inspection_only: false
+      }
+    ];
+
+    // DIC pribor xato kodlari (13 ta)
+    const DIC_CODES = [
+      { code: 82, level: "warning", title: "Tez orada dvigatel moyini almashtiring", reason: "Moy qoldiq resursi tugagan (Oil Life 0%)", action: "Moy va filtrni almashtiring va indikatorni yangilang." },
+      { code: 79, level: "danger", title: "Dvigatel moyi kam qolgan — moy qo'shing", reason: "Karterda moy minimal sathdan past", action: "Dvigatelni to'xtating, 5 daqiqa sovutib dexos1 Gen3 moy qo'shing." },
+      { code: 89, level: "warning", title: "Tez orada avtomobilga texnik xizmat ko'rsating", reason: "Elektron boshqaruv blokida davriy xizmat kodi", action: "Servisda diagnostika qildiring." },
+      { code: 90, level: "danger", title: "Tormoz yordamchi tizimini ta'mirlang", reason: "Tormoz kuchaytirgichi yoki ABS datchik nosozligi", action: "Tezlikni oshirmay zudlik bilan servisga boring." },
+      { code: 68, level: "danger", title: "Kuchaytirgichli rul tizimini ta'mirlang", reason: "Elektr rul kuchaytirgich (EPS) datchik xatosi", action: "Rul og'irlashishi mumkin, ehtiyotkorlik bilan chetga to'xtang." },
+      { code: 35, level: "info", title: "Pultdagi batareyani almashtiring", reason: "CR2032 batareyasi quvvati tugamoqda", action: "Pult korpusini ochib yangi CR2032 batareya qo'ying." },
+      { code: 2, level: "warning", title: "Masofadan boshqarish pulti topilmadi", reason: "Salonda kalit signali ushlanmadi", action: "Pultni markaziy konsoldagi o'rniga qo'yib ishga tushiring." },
+      { code: 5, level: "warning", title: "Rul ustuni qulflangan", reason: "Rul mexanik qulfi siqilib qolgan", action: "Rulni engil qimirlatib Start tugmasini bosing." },
+      { code: 25, level: "warning", title: "Chap old burilish indikatorida nosozlik", reason: "Old chap povorotnik lampochkasi kuygan", action: "Lampochkani almashtiring." },
+      { code: 26, level: "warning", title: "Chap orqa burilish indikatorida nosozlik", reason: "Orqa chap povorotnik lampochkasi ishlamayapti", action: "Lampochkani tekshiring." },
+      { code: 27, level: "warning", title: "O'ng old burilish indikatorida nosozlik", reason: "Old o'ng lampochka ishdan chiqqan", action: "Lampochkani yangilang." },
+      { code: 28, level: "warning", title: "O'ng orqa burilish indikatorida nosozlik", reason: "Orqa o'ng povorotnik kuygan", action: "Lampochkani almashtiring." },
+      { code: 65, level: "info", title: "O'g'rilik qilishga urinish aniqlandi", reason: "Signalizatsiya datchigi avvalroq ishlagan", action: "Kuzovni tekshiring, ruldagi SET/CLR bilan o'chiring." }
+    ];
+
+    // State
+    const defaultState = {
+      trim: '1.2_turbo_at',
+      year: 2023,
+      fuel: 'ai95',
+      condition: 'severe',
+      mileage: 45000,
+      lastOilKm: null,
+      lastOilMonths: null
+    };
+
+    let state = { ...defaultState };
+
+    function loadState() {
+      try {
+        const saved = localStorage.getItem('digitalcar_clean_state');
+        if (saved) {
+          state = { ...defaultState, ...JSON.parse(saved) };
+        }
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem('digitalcar_clean_state', JSON.stringify(state));
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
+    function formatNumberSpaces(val) {
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
+
+    function formatUZS(num) {
+      return formatNumberSpaces(num) + " UZS";
+    }
+
+    /* =====================================================================
+       HISOBLASH DVIGATELI
+       ===================================================================== */
+    function calculatePart(part, currentState) {
+      const kFuel = part.fuel_factor_applies ? (FUEL_FACTORS[currentState.fuel] || 1.0) : 1.0;
+      const kSev = part.severity_factor_applies ? (SEVERITY_FACTORS[currentState.condition] || 1.0) : 1.0;
+
+      let baseKm = part.interval_km;
+      if (typeof part.getIntervalKm === 'function') {
+        baseKm = part.getIntervalKm(currentState.trim, currentState.condition);
+      }
+
+      const effKm = Math.round(baseKm * kFuel * kSev);
+      const effMonths = part.interval_months ? Math.round(part.interval_months * kSev) : null;
+
+      let kmUsed = 0;
+      let monthsUsed = 0;
+
+      const hasUserLastOil = (currentState.lastOilKm !== null && currentState.lastOilKm !== undefined && currentState.lastOilKm >= 0);
+
+      if (part.id === 'engine_oil' && hasUserLastOil) {
+        kmUsed = Math.max(0, currentState.mileage - currentState.lastOilKm);
+        if (currentState.lastOilMonths !== null && currentState.lastOilMonths !== undefined && currentState.lastOilMonths >= 0) {
+          monthsUsed = currentState.lastOilMonths;
+        } else {
+          monthsUsed = 0; // Faqat km bo'yicha
+        }
+      } else {
+        // Oxirgi servis kiritilmagan: eng yaqin rejalashtirilgan karrali oraliq
+        const lastSchedKm = Math.floor(currentState.mileage / effKm) * effKm;
+        kmUsed = Math.max(0, currentState.mileage - lastSchedKm);
+
+        if (effMonths) {
+          const currentYear = 2026;
+          const carAgeYears = Math.max(0, currentYear - parseInt(currentState.year, 10));
+          const carAgeMonths = carAgeYears * 12 + 6;
+          monthsUsed = carAgeMonths % effMonths;
+        }
+      }
+
+      const kmRatio = kmUsed / effKm;
+      const monthRatio = effMonths ? (monthsUsed / effMonths) : 0;
+      const usedRatio = Math.max(kmRatio, monthRatio);
+
+      const usedPct = Math.round(usedRatio * 100);
+      const remainingPct = Math.max(0, Math.min(100, 100 - usedPct));
+      const remainingKm = Math.max(0, effKm - kmUsed);
+
+      // Status
+      let status = 'green';
+      if (part.is_inspection_only) {
+        // Tormoz kolodkalari faqat Tekshirish
+        status = remainingPct <= 35 ? 'amber' : 'green';
+      } else {
+        if (remainingPct <= 15) {
+          status = 'red';
+        } else if (remainingPct <= 35) {
+          status = 'amber';
+        } else {
+          status = 'green';
+        }
+      }
+
+      const priceInfo = part.getPrice(currentState.trim);
+
+      return {
+        ...part,
+        effKm,
+        effMonths,
+        kmUsed,
+        monthsUsed,
+        remainingPct,
+        remainingKm,
+        status,
+        priceInfo,
+        spec: part.getSpec(currentState.trim)
+      };
+    }
+
+    function calculateDiagnosis(currentState) {
+      const partsResults = PARTS.map(p => calculatePart(p, currentState));
+
+      // 1. Umumiy holat
+      const avgScore = Math.round(
+        partsResults.reduce((acc, curr) => acc + curr.remainingPct, 0) / partsResults.length
+      );
+
+      const redParts = partsResults.filter(p => p.status === 'red');
+      const amberParts = partsResults.filter(p => p.status === 'amber');
+      const greenParts = partsResults.filter(p => p.status === 'green');
+
+      let healthLabel = "Yaxshi";
+      if (redParts.length > 0 || avgScore < 40) {
+        healthLabel = "Diqqat talab";
+      } else if (avgScore >= 70) {
+        healthLabel = "Yaxshi";
+      } else {
+        healthLabel = "Qoniqarli";
+      }
+
+      // 2. Keyingi majburiy TO (red/amber orasida eng kam qolgan km)
+      let urgentCandidates = [...redParts, ...amberParts];
+      if (urgentCandidates.length === 0) {
+        urgentCandidates = [...greenParts];
+      }
+      const sortedByKm = [...urgentCandidates].sort((a, b) => a.remainingKm - b.remainingKm);
+      const nextDue = sortedByKm[0];
+
+      // 3. Smeta = sum(price + labor) of red and amber
+      const urgentList = [...redParts, ...amberParts];
+      let urgentTotal = 0;
+      urgentList.forEach(p => {
+        urgentTotal += (p.priceInfo.part + p.priceInfo.labor);
+      });
+
+      let displayTotal = urgentTotal;
+      let smetaDesc = `${urgentList.length} ta qism xizmati`;
+
+      // Agar hech narsa red/amber bo'lmasa, navbatdagi TO smetasi
+      if (urgentList.length === 0) {
+        const oilPrice = currentState.trim === '1.2_turbo_at' ? PRICES.oil_turbo : PRICES.oil_na;
+        displayTotal = (oilPrice.part + oilPrice.labor) + 
+                       (PRICES.oil_filter.part + PRICES.oil_filter.labor) + 
+                       (PRICES.air_filter.part + PRICES.air_filter.labor);
+        smetaDesc = "Navbatdagi rejali TO";
+      }
+
+      return {
+        partsResults,
+        totalScore: avgScore,
+        healthLabel,
+        nextDue,
+        displayTotal,
+        smetaDesc,
+        hasUserLastOil: (currentState.lastOilKm !== null && currentState.lastOilKm !== undefined && currentState.lastOilKm >= 0),
+        counts: {
+          all: partsResults.length,
+          red: redParts.length,
+          amber: amberParts.length,
+          green: greenParts.length
+        }
+      };
+    }
+
+    // Taqqoslash bloki (Comparison calculation)
+    function calculateComparison(currentState, currentDiag) {
+      const idealState = {
+        ...currentState,
+        fuel: 'ai95',
+        condition: 'normal'
+      };
+      const idealDiag = calculateDiagnosis(idealState);
+
+      const kF = FUEL_FACTORS[currentState.fuel] || 1.0;
+      const kS = SEVERITY_FACTORS[currentState.condition] || 1.0;
+      const kTotal = kF * kS;
+      const speedUpFactor = (1 / kTotal).toFixed(1);
+
+      // Qaysi qismlar sabab bo'lgan?
+      // Joriy holatda red yoki amber bo'lgan, lekin idealda narxi hisoblanmagan (green) yoki arzonroq qismlar
+      const diffParts = [];
+      let totalDiffUZS = 0;
+
+      currentDiag.partsResults.forEach(cp => {
+        const ip = idealDiag.partsResults.find(p => p.id === cp.id);
+        const isUrgentCurrent = (cp.status === 'red' || cp.status === 'amber');
+        const isUrgentIdeal = (ip && (ip.status === 'red' || ip.status === 'amber'));
+
+        if (isUrgentCurrent && !isUrgentIdeal) {
+          const cost = cp.priceInfo.part + cp.priceInfo.labor;
+          diffParts.push({ name: cp.name, cost });
+          totalDiffUZS += cost;
+        }
+      });
+
+      // Agar qismlar ro'yxati farqi 0 bo'lsa, umumiy smetalar farqi olinadi
+      const isSuboptimal = (currentState.fuel !== 'ai95' || currentState.condition !== 'normal');
+
+      return {
+        isSuboptimal,
+        kTotal: kTotal.toFixed(3),
+        speedUpFactor,
+        totalDiffUZS,
+        diffParts
+      };
+    }
+
+    /* =====================================================================
+       DOM ELEMENTLARI
+       ===================================================================== */
+    const mileageInput = document.getElementById('mileageInput');
+    const mileageSlider = document.getElementById('mileageSlider');
+    const carYear = document.getElementById('carYear');
+    const trimButtons = document.querySelectorAll('.trim-btn');
+    const fuelChips = document.querySelectorAll('.fuel-chip');
+    const condChips = document.querySelectorAll('.cond-chip');
+    const toggleLastServiceBtn = document.getElementById('toggleLastServiceBtn');
+    const lastServiceContainer = document.getElementById('lastServiceContainer');
+    const lastOilKm = document.getElementById('lastOilKm');
+    const lastOilMonths = document.getElementById('lastOilMonths');
+    const lastServiceToggleIcon = document.getElementById('lastServiceToggleIcon');
+    const chipTaxi = document.getElementById('chipTaxi');
+    const chipOwner = document.getElementById('chipOwner');
+    const calculateBtn = document.getElementById('calculateBtn');
+    const resetDefaultsBtn = document.getElementById('resetDefaultsBtn');
+    const printReportBtn = document.getElementById('printReportBtn');
+    const toggleGreenBtn = document.getElementById('toggleGreenBtn');
+    const listGreen = document.getElementById('listGreen');
+    const greenToggleIcon = document.getElementById('greenToggleIcon');
+    const toggleDicBtn = document.getElementById('toggleDicBtn');
+    const dicSection = document.getElementById('dicSection');
+    const dicToggleIcon = document.getElementById('dicToggleIcon');
+    const dicSearchInput = document.getElementById('dicSearchInput');
+    const dicCodesList = document.getElementById('dicCodesList');
+    const comparisonToggleHeader = document.getElementById('comparisonToggleHeader');
+    const comparisonDetailList = document.getElementById('comparisonDetailList');
+    const comparisonToggleIcon = document.getElementById('comparisonToggleIcon');
+
+    // Sinxronlash
+    function syncForm() {
+      mileageInput.value = formatNumberSpaces(state.mileage);
+      mileageSlider.value = state.mileage;
+      carYear.value = state.year;
+
+      trimButtons.forEach(btn => {
+        if (btn.dataset.val === state.trim) {
+          btn.className = 'trim-btn min-h-[44px] py-2 px-3 text-xs sm:text-sm font-bold rounded-xl border border-brand bg-brand text-white text-center transition-all';
+        } else {
+          btn.className = 'trim-btn min-h-[44px] py-2 px-3 text-xs sm:text-sm font-bold rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 text-center transition-all';
+        }
+      });
+
+      fuelChips.forEach(chip => {
+        if (chip.dataset.fuel === state.fuel) {
+          chip.className = 'fuel-chip min-h-[44px] p-2.5 rounded-xl border-2 border-brand bg-blue-50/70 text-slate-900 font-bold text-xs sm:text-sm text-center transition-all';
+        } else {
+          chip.className = 'fuel-chip min-h-[44px] p-2.5 rounded-xl border-2 border-slate-200 bg-white text-slate-700 font-bold text-xs sm:text-sm text-center transition-all';
+        }
+      });
+
+      condChips.forEach(chip => {
+        if (chip.dataset.cond === state.condition) {
+          chip.className = 'cond-chip min-h-[44px] p-2.5 rounded-xl border-2 border-brand bg-blue-50/70 text-slate-900 font-bold text-xs sm:text-sm text-center transition-all';
+        } else {
+          chip.className = 'cond-chip min-h-[44px] p-2.5 rounded-xl border-2 border-slate-200 bg-white text-slate-700 font-bold text-xs sm:text-sm text-center transition-all';
+        }
+      });
+
+      if (state.lastOilKm !== null && state.lastOilKm !== undefined) {
+        lastOilKm.value = state.lastOilKm;
+        lastServiceContainer.classList.remove('hidden');
+        lastServiceToggleIcon.textContent = '−';
+      }
+      if (state.lastOilMonths !== null && state.lastOilMonths !== undefined) {
+        lastOilMonths.value = state.lastOilMonths;
+      }
+    }
+
+    // Natijalarni chizish
+    function render() {
+      const diag = calculateDiagnosis(state);
+      const comp = calculateComparison(state, diag);
+
+      // 1. KPIlar
+      document.getElementById('kpiScore').textContent = diag.totalScore + '%';
+      const kpiLabelEl = document.getElementById('kpiLabel');
+      kpiLabelEl.textContent = diag.healthLabel;
+
+      if (diag.healthLabel === "Diqqat talab") {
+        kpiLabelEl.className = "text-[11px] font-bold px-1.5 py-0.2 rounded bg-red-100 text-statusRed";
+      } else if (diag.healthLabel === "Qoniqarli") {
+        kpiLabelEl.className = "text-[11px] font-bold px-1.5 py-0.2 rounded bg-amber-100 text-statusAmber";
+      } else {
+        kpiLabelEl.className = "text-[11px] font-bold px-1.5 py-0.2 rounded bg-emerald-100 text-statusGreen";
+      }
+
+      // Keyingi TO
+      document.getElementById('kpiNextName').textContent = diag.nextDue ? diag.nextDue.name : "Mavjud emas";
+      const kpiNextKmEl = document.getElementById('kpiNextKm');
+      if (diag.nextDue) {
+        if (diag.nextDue.remainingKm <= 0) {
+          kpiNextKmEl.textContent = "Muddati o'tgan";
+          kpiNextKmEl.className = "text-xs font-bold text-statusRed";
+        } else {
+          kpiNextKmEl.textContent = `~${formatNumberSpaces(diag.nextDue.remainingKm)} km qoldi`;
+          kpiNextKmEl.className = "text-xs font-semibold text-brand";
+        }
+      }
+
+      // Smeta
+      document.getElementById('kpiTotalCost').textContent = formatUZS(diag.displayTotal);
+      document.getElementById('kpiSmetaDesc').textContent = diag.smetaDesc;
+
+      // K koeffitsiyentlar qatori
+      const kF = (FUEL_FACTORS[state.fuel] || 1.0).toFixed(2);
+      const kS = (SEVERITY_FACTORS[state.condition] || 1.0).toFixed(2);
+      const kTot = (kF * kS).toFixed(3);
+      document.getElementById('appliedKText').textContent = `K yoqilg'i ${kF} x K sharoit ${kS} = ${kTot}`;
+
+      // Oxirgi servis kiritilmagan yozuvi
+      const noteEl = document.getElementById('unenteredServiceNote');
+      if (!diag.hasUserLastOil) {
+        noteEl.classList.remove('hidden');
+      } else {
+        noteEl.classList.add('hidden');
+      }
+
+      // Taqqoslash qatori
+      renderComparison(comp);
+
+      // Qismlar ro'yxati
+      renderParts(diag);
+
+      // Print
+      renderPrint(diag);
+
+      saveState();
+    }
+
+    function renderComparison(comp) {
+      const container = document.getElementById('comparisonContainer');
+      const summaryLine = document.getElementById('comparisonSummaryLine');
+      const detailList = document.getElementById('comparisonDetailList');
+
+      if (!comp.isSuboptimal) {
+        container.className = "p-3 rounded-xl border text-xs space-y-1 bg-emerald-50/70 border-emerald-200";
+        summaryLine.textContent = "Siz eng tejamkor ekspluatatsiya rejimidasiz (AI-95, normal sharoit).";
+        document.getElementById('comparisonToggleIcon').classList.add('hidden');
+        detailList.classList.add('hidden');
+        return;
+      }
+
+      document.getElementById('comparisonToggleIcon').classList.remove('hidden');
+      container.className = "p-3 rounded-xl border text-xs space-y-1.5 bg-amber-50/70 border-amber-200";
+
+      if (comp.totalDiffUZS > 0) {
+        summaryLine.textContent = `AI-95 va normal sharoitda ~${formatUZS(comp.totalDiffUZS)} kamroq bo'lardi (${comp.speedUpFactor}x tezroq eskirish)`;
+      } else {
+        summaryLine.textContent = `AI-95 va normal sharoitda ehtiyot qismlar ${comp.speedUpFactor}x sekinroq eskirardi`;
+      }
+
+      // Aniq X ga teng bo'lgan qismlar ro'yxati
+      detailList.innerHTML = '';
+      if (comp.diffParts.length > 0) {
+        comp.diffParts.forEach(dp => {
+          const row = document.createElement('div');
+          row.className = "flex justify-between items-center py-0.5";
+          row.innerHTML = `
+            <span>${dp.name}</span>
+            <span class="font-mono font-bold">${formatUZS(dp.cost)}</span>
+          `;
+          detailList.appendChild(row);
+        });
+
+        const totalRow = document.createElement('div');
+        totalRow.className = "flex justify-between items-center pt-1 border-t border-amber-200 font-bold";
+        totalRow.innerHTML = `
+          <span>Jami farq:</span>
+          <span class="font-mono">${formatUZS(comp.totalDiffUZS)}</span>
+        `;
+        detailList.appendChild(totalRow);
+      } else {
+        detailList.innerHTML = `<p class="italic text-slate-500">Ayni damda qismlar almashtirish probegiga yetmagan, ammo xizmat oraliqlari ${comp.speedUpFactor} baravar qisqargan.</p>`;
+      }
+    }
+
+    function createPartRow(part) {
+      const row = document.createElement('div');
+      row.className = "p-2.5 rounded-xl border border-slate-200 bg-white text-xs space-y-1.5 hover:border-slate-300 transition-colors cursor-pointer";
+      
+      const totalCost = part.priceInfo.part + part.priceInfo.labor;
+      let barColor = "bg-statusGreen";
+      let statusTextColor = "text-statusGreen";
+
+      if (part.status === 'red') {
+        barColor = "bg-statusRed";
+        statusTextColor = "text-statusRed font-bold";
+      } else if (part.status === 'amber') {
+        barColor = "bg-statusAmber";
+        statusTextColor = "text-statusAmber font-bold";
+      }
+
+      const sourceDisplay = SOURCES_VERIFIED ? part.source : "Ishlab chiqaruvchi tavsiyasi";
+
+      row.innerHTML = `
+        <div class="flex items-start justify-between gap-2">
+          <div>
+            <div class="font-bold text-slate-900">${part.name}</div>
+            <div class="text-[11px] text-slate-500">${part.spec}</div>
+          </div>
+          <div class="text-right flex-shrink-0">
+            <div class="font-bold text-slate-900">${formatUZS(totalCost)}</div>
+            <div class="${statusTextColor} text-[11px]">${part.remainingPct}% qoldi (${formatNumberSpaces(part.remainingKm)} km)</div>
+          </div>
+        </div>
+
+        <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+          <div class="${barColor} h-1.5 rounded-full" style="width: ${part.remainingPct}%"></div>
+        </div>
+
+        <div class="part-accordion-detail hidden pt-1.5 border-t border-slate-100 text-[11px] text-slate-600 flex justify-between items-center">
+          <span>Manba: <strong class="text-slate-800">${sourceDisplay}</strong></span>
+          <span>Qism: ${formatNumberSpaces(part.priceInfo.part)} + Mehnat: ${formatNumberSpaces(part.priceInfo.labor)} UZS</span>
+        </div>
+      `;
+
+      row.addEventListener('click', () => {
+        const detail = row.querySelector('.part-accordion-detail');
+        if (detail) {
+          detail.classList.toggle('hidden');
+        }
+      });
+
+      return row;
+    }
+
+    function renderParts(diag) {
+      const listRed = document.getElementById('listRed');
+      const listAmber = document.getElementById('listAmber');
+      const listGreen = document.getElementById('listGreen');
+
+      listRed.innerHTML = '';
+      listAmber.innerHTML = '';
+      listGreen.innerHTML = '';
+
+      const redParts = diag.partsResults.filter(p => p.status === 'red');
+      const amberParts = diag.partsResults.filter(p => p.status === 'amber');
+      const greenParts = diag.partsResults.filter(p => p.status === 'green');
+
+      document.getElementById('badgeCountRed').textContent = redParts.length;
+      document.getElementById('badgeCountAmber').textContent = amberParts.length;
+      document.getElementById('badgeCountGreen').textContent = greenParts.length;
+
+      document.getElementById('groupRed').style.display = redParts.length > 0 ? 'block' : 'none';
+      document.getElementById('groupAmber').style.display = amberParts.length > 0 ? 'block' : 'none';
+
+      redParts.forEach(p => listRed.appendChild(createPartRow(p)));
+      amberParts.forEach(p => listAmber.appendChild(createPartRow(p)));
+      greenParts.forEach(p => listGreen.appendChild(createPartRow(p)));
+    }
+
+    function renderPrint(diag) {
+      const now = new Date();
+      document.getElementById('printDate').textContent = `${now.toLocaleDateString('uz-UZ')} ${now.toLocaleTimeString('uz-UZ')}`;
+      
+      const summaryEl = document.getElementById('printVehicleSummary');
+      const fuelNames = { ai95: 'AI-95', ai92: 'AI-92', metan: 'Metan', propan: 'Propan' };
+      const condNames = { normal: 'Normal', severe: 'Og\'ir' };
+
+      summaryEl.innerHTML = `
+        <div><strong>Avtomobil:</strong> Chevrolet Onix (${state.trim === '1.2_turbo_at' ? '1.2 Turbo AT' : '1.2 MT'})</div>
+        <div><strong>Yili / Probeg:</strong> ${state.year} / ${formatNumberSpaces(state.mileage)} km</div>
+        <div><strong>Yoqilg'i / Sharoit:</strong> ${fuelNames[state.fuel]} / ${condNames[state.condition]}</div>
+        <div><strong>Umumiy holat / Smeta:</strong> ${diag.totalScore}% (${diag.healthLabel}) / ${formatUZS(diag.displayTotal)}</div>
+      `;
+    }
+
+    function renderDic(query = '') {
+      dicCodesList.innerHTML = '';
+      const q = query.toLowerCase().trim();
+
+      const filtered = DIC_CODES.filter(item => {
+        if (!q) return true;
+        return item.code.toString().includes(q) ||
+               item.title.toLowerCase().includes(q) ||
+               item.reason.toLowerCase().includes(q) ||
+               item.action.toLowerCase().includes(q);
+      });
+
+      if (filtered.length === 0) {
+        dicCodesList.innerHTML = `<div class="p-3 text-center text-slate-400 text-xs">"${query}" bo'yicha kod topilmadi.</div>`;
+        return;
+      }
+
+      filtered.forEach(item => {
+        const itemEl = document.createElement('div');
+        itemEl.className = "p-2.5 rounded-xl border border-slate-200 bg-slate-50 space-y-1";
+        itemEl.innerHTML = `
+          <div class="flex justify-between items-center">
+            <span class="font-black text-slate-900 font-mono">Kod ${item.code}</span>
+            <span class="text-[10px] font-bold px-1.5 py-0.2 rounded ${item.level === 'danger' ? 'bg-red-100 text-statusRed' : (item.level === 'warning' ? 'bg-amber-100 text-statusAmber' : 'bg-blue-100 text-brand')}">
+              ${item.level === 'danger' ? 'Xavfli' : (item.level === 'warning' ? 'Ogohlantirish' : 'Axborot')}
+            </span>
+          </div>
+          <div class="font-bold text-slate-800">${item.title}</div>
+          <div class="text-[11px] text-slate-600">Sabab: ${item.reason}</div>
+          <div class="text-[11px] text-brand font-medium">Chora: ${item.action}</div>
+        `;
+        dicCodesList.appendChild(itemEl);
+      });
+    }
+
+    /* =====================================================================
+       HODISALAR
+       ===================================================================== */
+    mileageSlider.addEventListener('input', (e) => {
+      state.mileage = parseInt(e.target.value, 10) || 0;
+      mileageInput.value = formatNumberSpaces(state.mileage);
+      render();
+    });
+
+    mileageInput.addEventListener('input', (e) => {
+      const raw = e.target.value.replace(/\s+/g, '');
+      let val = parseInt(raw, 10);
+      if (isNaN(val)) val = 0;
+      if (val > 200000) val = 200000;
+      state.mileage = val;
+      mileageSlider.value = val;
+      render();
+    });
+
+    mileageInput.addEventListener('blur', () => {
+      mileageInput.value = formatNumberSpaces(state.mileage);
+    });
+
+    trimButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.trim = btn.dataset.val;
+        syncForm();
+        render();
+      });
+    });
+
+    fuelChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        state.fuel = chip.dataset.fuel;
+        syncForm();
+        render();
+      });
+    });
+
+    condChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        state.condition = chip.dataset.cond;
+        syncForm();
+        render();
+      });
+    });
+
+    carYear.addEventListener('change', (e) => {
+      state.year = parseInt(e.target.value, 10);
+      render();
+    });
+
+    toggleLastServiceBtn.addEventListener('click', () => {
+      lastServiceContainer.classList.toggle('hidden');
+      lastServiceToggleIcon.textContent = lastServiceContainer.classList.contains('hidden') ? '+' : '−';
+    });
+
+    lastOilKm.addEventListener('input', (e) => {
+      const val = parseInt(e.target.value, 10);
+      state.lastOilKm = isNaN(val) ? null : val;
+      render();
+    });
+
+    lastOilMonths.addEventListener('input', (e) => {
+      const val = parseInt(e.target.value, 10);
+      state.lastOilMonths = isNaN(val) ? null : val;
+      render();
+    });
+
+    // 2 ta kichik matn-chip
+    chipTaxi.addEventListener('click', () => {
+      state.trim = '1.2_turbo_at';
+      state.year = 2023;
+      state.fuel = 'metan';
+      state.condition = 'severe';
+      state.mileage = 90000;
+      state.lastOilKm = null;
+      state.lastOilMonths = null;
+      syncForm();
+      render();
+      document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    chipOwner.addEventListener('click', () => {
+      state.trim = '1.2_turbo_at';
+      state.year = 2023;
+      state.fuel = 'ai95';
+      state.condition = 'normal';
+      state.mileage = 45000;
+      state.lastOilKm = null;
+      state.lastOilMonths = null;
+      syncForm();
+      render();
+      document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    calculateBtn.addEventListener('click', () => {
+      render();
+      document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    resetDefaultsBtn.addEventListener('click', () => {
+      state = { ...defaultState };
+      lastServiceContainer.classList.add('hidden');
+      lastServiceToggleIcon.textContent = '+';
+      syncForm();
+      render();
+    });
+
+    // Taqqoslash tafsiloti yoyilishi
+    comparisonToggleHeader.addEventListener('click', () => {
+      comparisonDetailList.classList.toggle('hidden');
+      const isHidden = comparisonDetailList.classList.contains('hidden');
+      comparisonToggleIcon.textContent = isHidden ? '+ Tafsilot' : '− Yopish';
+    });
+
+    // Yashil qismlar yig'ilishi
+    toggleGreenBtn.addEventListener('click', () => {
+      listGreen.classList.toggle('hidden');
+      greenToggleIcon.textContent = listGreen.classList.contains('hidden') ? '+' : '−';
+    });
+
+    // DIC yig'ilishi
+    toggleDicBtn.addEventListener('click', () => {
+      dicSection.classList.toggle('hidden');
+      dicToggleIcon.textContent = dicSection.classList.contains('hidden') ? '+' : '−';
+    });
+
+    dicSearchInput.addEventListener('input', (e) => {
+      renderDic(e.target.value);
+    });
+
+    printReportBtn.addEventListener('click', () => {
+      window.print();
+    });
+
+    // PWA
+    let deferredPrompt;
+    const pwaInstallBtn = document.getElementById('pwaInstallBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      pwaInstallBtn.classList.remove('hidden');
+    });
+
+    pwaInstallBtn.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      deferredPrompt = null;
+      pwaInstallBtn.classList.add('hidden');
+    });
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+
+    // Init
+    loadState();
+    syncForm();
+    render();
+    renderDic();
+
+  </script>
+</body>
+</html>
