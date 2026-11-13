@@ -8,7 +8,7 @@
 
 ## Jonli havola va foydalanish
 
-* **Onlayn veb-ilova (GitHub Pages):** [https://atabaev.github.io/DigitalCar/](https://atabaev.github.io/DigitalCar/)
+* **Onlayn veb-ilova (GitHub Pages):** [https://atabaev.github.io/AvtoBeka/](https://atabaev.github.io/AvtoBeka/)
 * **Offlayn rejimda:** `index.html` faylini istalgan brauzerda ikki marta bosib ochish kifoya (hech qanday server yoki o'rnatish talab qilinmaydi).
 
 ---
